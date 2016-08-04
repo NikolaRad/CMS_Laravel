@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -20,7 +21,8 @@ class UserController extends Controller
 
     public function index()
     {
-        return "Index page";
+        $users = User::all();
+        return view('admin.user.index',compact('users'));
     }
 
     /**
@@ -30,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.add');
     }
 
     /**
@@ -41,7 +43,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,['name'=>'required','email'=>'required','password'=>'required']);
+        $user = new User();
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+        if($user->save()){
+            $request->session()->flash('created','New user has been successfully created. ');
+        }
+        return redirect()->back();
     }
 
     /**
