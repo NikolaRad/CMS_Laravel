@@ -15,7 +15,7 @@
             </div>
         </div>
     @endif
-    {!! Form::open(["method"=>"POST","action"=>"UserController@store"]) !!}
+    {!! Form::open(["method"=>"POST","action"=>"UserController@store","files"=>true]) !!}
         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
             {!! Form::label('Name: ') !!}
             {!! Form::text('name',Request::old('name'),["class"=>"form-control"]) !!}
@@ -26,7 +26,19 @@
         </div>
         <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
             {!! Form::label('Password: ') !!}
-            {!! Form::text('password',Request::old('password'),["class"=>"form-control"]) !!}
+            {!! Form::password('password',["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Photo: ') !!}
+            {!! Form::file('photo') !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Status: ') !!}
+            {!! Form::select('is_active',array(0=>'Inactive',1=>'Active'),0,["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Role: ') !!}
+            {!! Form::select('role',array()+ $roles,1,["class"=>"form-control"]) !!}
         </div>
         <div class="form-group">
             {!! Form::submit('Add User',["class"=>"form-control btn btn-primary"]) !!}

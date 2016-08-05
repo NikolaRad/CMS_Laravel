@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Photo;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -32,7 +34,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.add');
+        $roles = Role::lists('name','id')->all();
+        return view('admin.user.add',compact('roles'));
     }
 
     /**
@@ -44,10 +47,19 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,['name'=>'required','email'=>'required','password'=>'required']);
+        $photo_id = null;
+        if($request->file('photo')){
+            $photo = Photo::create(['name'=>$request->file('photo')->getClientOriginalName()]);
+            $request->file('photo')->move(base_path('\public\images'),$request->file('photo')->getClientOriginalName());
+            $photo_id = $photo->id;
+        }
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->password = bcrypt($request->get('password'));
+        $user->is_active  =$request->get('is_active');
+        $user->role_id = $request->get('role');
+        $user->photo_id = $photo_id;
         if($user->save()){
             $request->session()->flash('created','New user has been successfully created. ');
         }

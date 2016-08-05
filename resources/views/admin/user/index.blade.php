@@ -14,6 +14,7 @@
             <th>Is Active</th>
             <th>Created</th>
             <th>Updated</th>
+            <th>Photo</th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +28,11 @@
                 <td>{{ $user->is_active == 1 ? "Yes" : "No" }}</td>
                 <td>{{ $user->created_at->diffForHumans() }}</td>
                 <td>{{ $user->updated_at->diffForHumans() }}</td>
+                @if($user->photo)
+                    <td><img height="40" src="{{ $user->photo->name }}" alt="User photo"></td>
+                @elseif(!$user->photo)
+                    <td>User has no photo</td>
+                @endif
               </tr>
           @endforeach
         @endif
