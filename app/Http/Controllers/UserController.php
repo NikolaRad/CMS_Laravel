@@ -85,7 +85,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $roles = Role::lists('name','id')->all();
+        $user = User::findOrFail($id);
+        return view('admin.user.edit',compact('roles','user'));
     }
 
     /**
@@ -97,7 +99,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,['name'=>'required','email'=>'required','password'=>'required']);
+        $user = User::findOrFail($id);
+        $photo_id = $user->photo_id;
+        if($request->file('photo')){
+            $photo = Photo::create(['name'=>$request->file('photo')->getClientOriginalName()]);
+            $request->file('photo')->move(base_path('\public\images'),$request->file('photo')->getClientOriginalName());
+            $photo_id = $photo->id;
+        }
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = $request->get('password');
+        $user->photo_id = $photo_id;
+        $user->is_active = $request->get('is_active');
+        $user->role_id = $request->get('role');
+        if($user->save()){
+            $request->session()->flash('updated','User has been successfully updated.');
+        }
+        return redirect()->back();
     }
 
     /**

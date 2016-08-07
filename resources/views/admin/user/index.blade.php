@@ -15,6 +15,7 @@
             <th>Created</th>
             <th>Updated</th>
             <th>Photo</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -29,10 +30,11 @@
                 <td>{{ $user->created_at->diffForHumans() }}</td>
                 <td>{{ $user->updated_at->diffForHumans() }}</td>
                 @if($user->photo)
-                    <td><img height="40" src="{{ $user->photo->name }}" alt="User photo"></td>
+                    <td><img height="50" src="{{ $user->photo->name }}" alt="User photo"></td>
                 @elseif(!$user->photo)
-                    <td>User has no photo</td>
+                      <td><img height="50" src="http://www.placehold.it/400x400" alt="User photo"></td>
                 @endif
+                <td><a href="{{ url('/admin/users/' . $user->id . '/edit') }}"><span style="font-size: large;" class="glyphicon glyphicon-edit"></span></a></td>
               </tr>
           @endforeach
         @endif
