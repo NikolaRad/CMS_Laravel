@@ -26,37 +26,40 @@
     </div>
     
     <div class="col-sm-9">
-    {!! Form::model($user, ["method"=>"PATCH","action"=>["UserController@update",$user->id],"files"=>true]) !!}
-    <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-        {!! Form::label('Name: ') !!}
-        {!! Form::text('name',$user->name,["class"=>"form-control"]) !!}
+        {!! Form::model($user, ["method"=>"PATCH","action"=>["UserController@update",$user->id],"files"=>true]) !!}
+        <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+            {!! Form::label('Name: ') !!}
+            {!! Form::text('name',$user->name,["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+            {!! Form::label('Email: ') !!}
+            {!! Form::email('email',$user->email,["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
+            {!! Form::label('Password: ') !!}
+            {!! Form::password('password',["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Photo: ') !!}
+            {!! Form::file('photo') !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Status: ') !!}
+            {!! Form::select('is_active',array(0=>'Inactive',1=>'Active'),$user->is_active,["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Role: ') !!}
+            {!! Form::select('role',array()+ $roles,$user->role_id,["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::submit('Update User',["class"=>"form-control btn btn-primary"]) !!}
+        </div>
+        {!! Form::close() !!}
+        {!! Form::model($user,['method'=>'DELETE','action'=>['UserController@destroy',$user->id]]) !!}
+        {!! Form::submit('Trash',['class'=>'btn btn-danger form-control']) !!}
+        {!! Form::close() !!}
+        @if(count($errors)>0)
     </div>
-    <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-        {!! Form::label('Email: ') !!}
-        {!! Form::email('email',$user->email,["class"=>"form-control"]) !!}
-    </div>
-    <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-        {!! Form::label('Password: ') !!}
-        {!! Form::password('password',["class"=>"form-control"]) !!}
-    </div>
-    <div class="form-group">
-        {!! Form::label('Photo: ') !!}
-        {!! Form::file('photo') !!}
-    </div>
-    <div class="form-group">
-        {!! Form::label('Status: ') !!}
-        {!! Form::select('is_active',array(0=>'Inactive',1=>'Active'),$user->is_active,["class"=>"form-control"]) !!}
-    </div>
-    <div class="form-group">
-        {!! Form::label('Role: ') !!}
-        {!! Form::select('role',array()+ $roles,$user->role_id,["class"=>"form-control"]) !!}
-    </div>
-    <div class="form-group">
-        {!! Form::submit('Update User',["class"=>"form-control btn btn-primary"]) !!}
-    </div>
-    {!! Form::close() !!}
-    </div>
-    @if(count($errors)>0)
         <div class="row">
             <div class="col-md-12">
                 @foreach($errors->all() as $error)

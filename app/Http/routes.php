@@ -6,8 +6,11 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::resource('/admin/users','UserController');
+Route::group(['middleware'=>'admin'],function(){
 
-Route::get('/admin',function(){
-    return view('admin.index');
-})->middleware('auth');
+    Route::resource('/admin/users','UserController');
+
+    Route::get('/admin',function(){
+        return view('admin.index');
+    });
+});

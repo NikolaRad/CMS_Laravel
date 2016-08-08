@@ -1,9 +1,24 @@
 @extends('layouts.admin')
 
 @section('content')
+
+    @if(session('deleted'))
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-success alert-dismissible text-center fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ session('deleted') }}
+                </div>
+            </div>
+        </div>
+    @endif
+
     @section('title')
         Users
     @endsection
+
     <table class="table table-hover">
         <thead>
           <tr>
@@ -16,6 +31,7 @@
             <th>Updated</th>
             <th>Photo</th>
             <th>Edit</th>
+            <th>Trash</th>
           </tr>
         </thead>
         <tbody>
@@ -34,11 +50,16 @@
                 @elseif(!$user->photo)
                       <td><img height="50" src="http://www.placehold.it/400x400" alt="User photo"></td>
                 @endif
-                <td><a href="{{ url('/admin/users/' . $user->id . '/edit') }}"><span style="font-size: large;" class="glyphicon glyphicon-edit"></span></a></td>
+                <td><a class="btn btn-warning" title="Edit user" href="{{ url('/admin/users/' . $user->id . '/edit') }}"><span class="glyphicon glyphicon-edit"></span></a></td>
+                <td>
+                    {!! Form::model($user,['method'=>'DELETE','action'=>['UserController@destroy',$user->id]]) !!}
+                    {!! Form::submit('Trash',['class'=>'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+                </td>
               </tr>
           @endforeach
         @endif
         </tbody>
-      </table>
+    </table>
 
 @endsection

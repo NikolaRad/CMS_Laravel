@@ -8,14 +8,11 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -99,7 +96,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,['name'=>'required','email'=>'required','password'=>'required']);
+        $this->validate($request,['name'=>'required','email'=>'required']);
         $user = User::findOrFail($id);
         $photo_id = $user->photo_id;
         if($request->file('photo')){
@@ -107,9 +104,14 @@ class UserController extends Controller
             $request->file('photo')->move(base_path('\public\images'),$request->file('photo')->getClientOriginalName());
             $photo_id = $photo->id;
         }
+        if(!empty($request->get('password'))){
+            $password = bcrypt($request->get('password'));
+        }else{
+            $password = $user->password;
+        }
         $user->name = $request->get('name');
         $user->email = $request->get('email');
-        $user->password = $request->get('password');
+        $user->password = $password;
         $user->photo_id = $photo_id;
         $user->is_active = $request->get('is_active');
         $user->role_id = $request->get('role');
@@ -127,6 +129,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        unlink(public_path() . $user->photo->name);
+        if($user->delete()){
+            Session::flash('deleted','The user ' . $user->name . ' has been successfully deleted.');
+            return redirect(url('/admin/users'));
+        }
     }
 }
