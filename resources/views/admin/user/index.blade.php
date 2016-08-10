@@ -51,7 +51,7 @@
                       <td><img height="50" src="http://www.placehold.it/400x400" alt="User photo"></td>
                 @endif
                 <td><a class="btn btn-warning" title="Edit user" href="{{ url('/admin/users/' . $user->id . '/edit') }}"><span class="glyphicon glyphicon-edit"></span></a></td>
-                <td>
+                <td onclick="return confirm('Are you sure you want to delete this user?')">
                     {!! Form::model($user,['method'=>'DELETE','action'=>['UserController@destroy',$user->id]]) !!}
                     {!! Form::submit('Trash',['class'=>'btn btn-danger']) !!}
                     {!! Form::close() !!}
