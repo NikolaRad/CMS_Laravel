@@ -38,11 +38,11 @@
             @foreach($posts as $post)
           <tr>
               <td>{{ $post->id }}</td>
-              <td>{{ $post->user->name }}</td>
+              <td>{{ $post->user ? $post->user->name : 'Unknown user' }}</td>
               <td>{{ !$post->category ? 'Default category' : $post->category->name }}</td>
               <td>{{ $post->title }}</td>
               <td>{{ str_limit($post->content,100) }}...</td>
-              <td><img class="img-responsive img-rounded" src="{{ $post->photo->name }}" alt=""></td>
+              <td><img width="200" class="img-responsive img-rounded" src="{{ $post->photo ? $post->photo->name : "http://www.placehold.it/200x200" }}" alt=""></td>
               <td>{{ $post->created_at->diffForHumans() }}</td>
               <td>{{ $post->updated_at->diffForHumans() }}</td>
               <td><a class="btn btn-warning" href="/admin/posts/{{ $post->id }}/edit"><span class="glyphicon glyphicon-edit"></span></a></td>

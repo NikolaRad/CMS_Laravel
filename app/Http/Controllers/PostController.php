@@ -127,6 +127,7 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $photo = $post->photo->name;
         unlink(public_path() . $photo);
+        $post->photo->delete();
         if($post->delete()){
             Session::flash('deleted_post','The post with ID ' . $post->id . ' has been successfully deleted.');
         }

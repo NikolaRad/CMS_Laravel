@@ -17,7 +17,7 @@
         </div>
     @endif
     <div class="col-md-3">
-        <img class="img-responsive img-thumbnail" src="{{ $post->photo->name }}" alt="Post has no photo">
+        <img class="img-responsive img-thumbnail" src="{{ $post->photo ? $post->photo->name : "http://www.placehold.it/200x200" }}" alt="Post has no photo">
     </div>
     <div class="col-md-9">
         {!! Form::model($post,["method"=>"PATCH","action"=>["PostController@update",$post->id],"files"=>true]) !!}

@@ -14,6 +14,8 @@ Route::group(['middleware'=>'admin'],function(){
 
     Route::resource('/admin/categories','CategoryController');
 
+    Route::resource('/admin/media','MediaController');
+
     Route::get('/admin',function(){
         return view('admin.index');
     });

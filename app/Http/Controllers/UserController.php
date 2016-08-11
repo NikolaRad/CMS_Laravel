@@ -131,6 +131,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         unlink(public_path() . $user->photo->name);
+        $user->photo->delete();
+        foreach($user->posts as $post){
+            $post->photo->delete();
+            $post->delete();
+        }
         if($user->delete()){
             Session::flash('deleted','The user ' . $user->name . ' has been successfully deleted.');
             return redirect(url('/admin/users'));

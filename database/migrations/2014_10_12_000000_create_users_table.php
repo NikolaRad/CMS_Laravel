@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->integer('photo_id');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
         });
     }
 

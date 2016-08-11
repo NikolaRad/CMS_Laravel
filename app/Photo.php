@@ -11,4 +11,12 @@ class Photo extends Model
     public function getNameAttribute($value){
         return "/images/" . $value;
     }
+
+    public function user(){
+        return $this->hasOne('App\User');
+    }
+
+    public function post(){
+        return $this->hasOne('App\Post');
+    }
 }

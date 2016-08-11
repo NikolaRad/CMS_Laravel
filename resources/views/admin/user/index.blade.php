@@ -46,7 +46,7 @@
                 <td>{{ $user->created_at->diffForHumans() }}</td>
                 <td>{{ $user->updated_at->diffForHumans() }}</td>
                 @if($user->photo)
-                    <td><img height="50" src="{{ $user->photo->name }}" alt="User photo"></td>
+                    <td><img height="50" src="{{ $user->photo ? $user->photo->name : "http://www.placehold.it/200x200" }}" alt="User photo"></td>
                 @elseif(!$user->photo)
                       <td><img height="50" src="http://www.placehold.it/400x400" alt="User photo"></td>
                 @endif

@@ -11,6 +11,8 @@
 
     <title>Admin</title>
 
+    @yield('style')
+
     <!-- jQuery -->
     <script src="{{asset('js/libs.js')}}"></script>
 
@@ -149,11 +151,11 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Media<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/media">All Media</a>
+                                <a href="/admin/media">All Media</a>
                             </li>
 
                             <li>
-                                <a href="">Upload Media</a>
+                                <a href="/admin/media/create">Upload Media</a>
                             </li>
 
                         </ul>
