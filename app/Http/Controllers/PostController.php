@@ -133,4 +133,22 @@ class PostController extends Controller
         }
         return redirect()->back();
     }
+
+    public function post($id){
+        $categories = Category::all();
+        $post = Post::findOrFail($id);
+        return view('post',compact('post','categories'));
+    }
+
+    public function welcome(){
+        $posts = Post::all();
+        $categories = Category::all();
+        return view('welcome',compact('categories','posts'));
+    }
+
+    public function category($id){
+        $posts = Post::where('category_id',$id)->get();
+        $categories = Category::all();
+        return view('welcome',compact('categories','posts'));
+    }
 }
