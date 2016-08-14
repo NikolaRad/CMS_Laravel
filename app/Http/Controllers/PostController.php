@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Comment;
 use App\Photo;
 use App\Post;
 use Illuminate\Http\Request;
@@ -71,7 +72,12 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $categories = Category::all();
+        $post = Post::findOrFail($id);
+        $comments = Comment::where('post_id',$id)->get();
+        $post->views = $post->views + 1;
+        $post->save();
+        return view('post',compact('post','categories','comments'));
     }
 
     /**
@@ -132,12 +138,6 @@ class PostController extends Controller
             Session::flash('deleted_post','The post with ID ' . $post->id . ' has been successfully deleted.');
         }
         return redirect()->back();
-    }
-
-    public function post($id){
-        $categories = Category::all();
-        $post = Post::findOrFail($id);
-        return view('post',compact('post','categories'));
     }
 
     public function welcome(){

@@ -41,7 +41,7 @@
                         Photo isn't used
                     @endif
                 </td>
-                <td><img width="100" class="img-responsive img-rounded" src="{{ $photo->name }}" alt=""></td>
+                <td><img width="50" height="50" class="img-responsive img-rounded" src="{{ $photo->name }}" alt=""></td>
                 <td>{{ $photo->created_at ? $photo->created_at->diffForHumans() : "Unknown date" }}</td>
                 <td>
                     {!! Form::open(['method'=>'DELETE','action'=>['MediaController@destroy',$photo->id]]) !!}

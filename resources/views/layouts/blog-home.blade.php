@@ -44,7 +44,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                CMS Application
+                Home
             </a>
         </div>
 
@@ -85,8 +85,7 @@
         <div class="col-md-8">
 
             <h1 class="page-header">
-                Welcome to CMS Application
-                <small>View lattest posts</small>
+                Lattest posts
             </h1>
 
             @yield('content')

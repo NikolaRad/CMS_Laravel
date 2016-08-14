@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Photo;
 use App\Role;
 use App\User;
@@ -130,11 +131,17 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        unlink(public_path() . $user->photo->name);
-        $user->photo->delete();
+        $comments = Comment::where('user_id',$id)->get();
+        if($user->photo) {
+            unlink(public_path() . $user->photo->name);
+            $user->photo->delete();
+        }
         foreach($user->posts as $post){
             $post->photo->delete();
             $post->delete();
+        }
+        foreach($comments as $comment){
+            $comment->delete();
         }
         if($user->delete()){
             Session::flash('deleted','The user ' . $user->name . ' has been successfully deleted.');

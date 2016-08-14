@@ -11,11 +11,15 @@
                 by <a href="/admin/users">{{$post->user->name}}</a>
             </p>
             <p><span class="glyphicon glyphicon-time"></span> Posted {{$post->created_at->diffForHumans()}}</p>
-            <hr>
+            <p>
+                <span class="pull-left alert alert-info">Views: {{$post->views}}</span>
+                <span class="pull-right alert alert-info">Comments: {{count($post->comments)}}</span>
+            </p>
             <img class="img-responsive img-rounded" src="{{$post->photo ? $post->photo->name : 'http://placehold.it/900x300'}}" alt="">
             <hr>
             <p class="text-justify">{{str_limit($post->content,200)}}</p>
             <a class="btn btn-primary" href="/post/{{$post->id}}">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <hr>
         @endforeach
     @else
         <h2>There is no posts</h2>

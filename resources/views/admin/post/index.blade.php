@@ -27,6 +27,8 @@
             <th>Title</th>
             <th>Content</th>
             <th>Photo</th>
+            <th>Comments</th>
+            <th>Views</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Edit</th>
@@ -43,6 +45,8 @@
               <td><a href="/post/{{ $post->id }}">{{ $post->title }}</a></td>
               <td>{{ str_limit($post->content,100) }}...</td>
               <td><img width="200" class="img-responsive img-rounded" src="{{ $post->photo ? $post->photo->name : "http://www.placehold.it/200x200" }}" alt=""></td>
+              <td class="text-center">{{count($post->comments)}}</td>
+              <td class="text-center">{{$post->views ? $post->views : 'No views'}}</td>
               <td>{{ $post->created_at->diffForHumans() }}</td>
               <td>{{ $post->updated_at->diffForHumans() }}</td>
               <td><a class="btn btn-warning" href="/admin/posts/{{ $post->id }}/edit"><span class="glyphicon glyphicon-edit"></span></a></td>

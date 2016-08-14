@@ -6,6 +6,7 @@ use App\Comment;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -16,20 +17,9 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::all();
+        $comments = Comment::orderBy('id','desc')->get();
         return view('admin.comment.index',compact('comments'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -38,41 +28,16 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $this->validate($request,['content'=>'required']);
+        $post_id = $request->get('post');
+        $author_id = Auth::user()->id;
+        $content = $request->get('content');
+        $comment = new Comment();
+        $comment->post_id = $post_id;
+        $comment->user_id = $author_id;
+        $comment->content = $content;
+        $comment->save();
+        return redirect()->back();
     }
 
     /**
@@ -83,6 +48,19 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+        return redirect()->back();
+    }
+
+    public function change($id){
+        $comment = Comment::findOrFail($id);
+        if($comment->is_approved == 0){
+            $comment->is_approved = 1;
+        }elseif($comment->is_approved == 1){
+            $comment->is_approved = 0;
+        }
+        $comment->save();
+        return redirect()->back();
     }
 }

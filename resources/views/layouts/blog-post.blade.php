@@ -42,7 +42,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                CMS Application
+                Home
             </a>
         </div>
 
