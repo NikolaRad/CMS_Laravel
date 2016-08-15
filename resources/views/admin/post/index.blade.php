@@ -29,8 +29,10 @@
             <th>Photo</th>
             <th>Comments</th>
             <th>Views</th>
+            <th>Status</th>
             <th>Created</th>
             <th>Updated</th>
+            <th>Status</th>
             <th>Edit</th>
             <th>Trash</th>
           </tr>
@@ -47,8 +49,10 @@
               <td><img width="200" class="img-responsive img-rounded" src="{{ $post->photo ? $post->photo->name : "http://www.placehold.it/200x200" }}" alt=""></td>
               <td class="text-center">{{count($post->comments)}}</td>
               <td class="text-center">{{$post->views ? $post->views : 'No views'}}</td>
+              <td>{{$post->status == 0 ? 'drafted' : 'published'}}</td>
               <td>{{ $post->created_at->diffForHumans() }}</td>
               <td>{{ $post->updated_at->diffForHumans() }}</td>
+              <td><a class="btn btn-warning" href="/admin/posts/change/{{$post->id}}"><span class="glyphicon glyphicon-refresh"></span></a></td>
               <td><a class="btn btn-warning" href="/admin/posts/{{ $post->id }}/edit"><span class="glyphicon glyphicon-edit"></span></a></td>
               <td onclick="return confirm('Are you sure you want to delete this user?')">
               {!! Form::model($post,["method"=>"DELETE","action"=>['PostController@destroy',$post->id]]) !!}

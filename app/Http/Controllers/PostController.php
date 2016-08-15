@@ -58,6 +58,7 @@ class PostController extends Controller
         $post->photo_id = $photo_id;
         $post->title = $request->get('title');
         $post->content = $request->get('content');
+        $post->status = $request->get('status');
         if($post->save()){
             $request->session()->flash('created_post','The post has been successfully created.');
         }
@@ -116,6 +117,7 @@ class PostController extends Controller
         }
         $post->title = $request->get('title');
         $post->content = $request->get('content');
+        $post->status = $request->get('status');
         if($post->save()){
             $request->session()->flash('updated_post','The post has been successfully updated.');
         }
@@ -141,7 +143,7 @@ class PostController extends Controller
     }
 
     public function welcome(){
-        $posts = Post::all();
+        $posts = Post::where('status',1)->get();
         $categories = Category::all();
         return view('welcome',compact('categories','posts'));
     }
@@ -150,5 +152,12 @@ class PostController extends Controller
         $posts = Post::where('category_id',$id)->get();
         $categories = Category::all();
         return view('welcome',compact('categories','posts'));
+    }
+
+    public function change($id){
+        $post = Post::findOrFail($id);
+        $post->status == 0 ? $post->status = 1 : $post->status = 0;
+        $post->save();
+        return redirect()->back();
     }
 }

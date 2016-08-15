@@ -38,6 +38,10 @@
             {!! Form::textarea("content",$post->content,["class"=>"form-control"]) !!}
         </div>
         <div class="form-group">
+            {!! Form::label("status","Post status: ") !!}
+            {!! Form::select("status",array("0"=>"draft","1"=>"published"),$post->status == 'draft' ? 0 : 1,["class"=>"form-control"]) !!}
+        </div>
+        <div class="form-group">
             {!! Form::submit("Update post",["class"=>"form-control btn btn-primary"]) !!}
         </div>
         {!! Form::close() !!}

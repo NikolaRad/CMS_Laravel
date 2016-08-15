@@ -21,6 +21,8 @@
 
     <link href="{{asset('css/libs.css')}}" rel="stylesheet">
 
+    @yield('charts')
+
 </head>
 
 <body id="admin-page">

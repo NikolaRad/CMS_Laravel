@@ -24,9 +24,8 @@ Route::group(['middleware'=>'admin'],function(){
 
     Route::resource('/admin/comment/replies','ReplayController');
 
-    Route::get('/admin',function(){
-        return view('admin.index');
-    });
+    Route::get('/admin','AdminController@index');
 
     Route::get('/admin/comments/change/{id}','CommentController@change');
+    Route::get('/admin/posts/change/{id}','PostController@change');
 });

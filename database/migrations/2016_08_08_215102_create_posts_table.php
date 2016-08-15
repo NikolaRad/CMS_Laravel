@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->integer('photo_id')->unsigned()->index();
             $table->string('title');
             $table->text('content');
+            $table->string('status')->default('draft');
             $table->integer('views');
             $table->timestamps();
 
