@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Comment;
 use App\Post;
+use App\Reply;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,10 @@ class AdminController extends Controller
         $comments = Comment::all();
         $approved = Comment::where('is_approved',1)->get();
         $unapproved = Comment::where('is_approved',0)->get();
+        $replies = Reply::all();
+        $replies_approved = Reply::where('is_approved',1);
+        $replies_unapproved = Reply::where('is_approved',0);
         $categories = Category::all();
-        return view('admin.index',compact('users','posts','comments','categories','administrators','authors','subscribers','approved','unapproved','drafted','published'));
+        return view('admin.index',compact('users','posts','comments','replies','replies_approved','replies_unapproved','administrators','authors','subscribers','approved','unapproved','drafted','published','categories'));
     }
 }

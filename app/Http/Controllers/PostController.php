@@ -21,7 +21,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('id','desc')->get();
+        $posts = Post::orderBy('id','desc')->paginate(5);
         return view('admin.post.index',compact('posts'));
     }
 
@@ -143,7 +143,7 @@ class PostController extends Controller
     }
 
     public function welcome(){
-        $posts = Post::where('status',1)->get();
+        $posts = Post::where('status',1)->paginate(5);
         $categories = Category::all();
         return view('welcome',compact('categories','posts'));
     }

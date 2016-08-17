@@ -61,5 +61,9 @@
         @endif
         </tbody>
     </table>
-
+    <div class="row">
+        <div class="col-md-6 col-md-offset-5">
+            {{$users->render()}}
+        </div>
+    </div>
 @endsection

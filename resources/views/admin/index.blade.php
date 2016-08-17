@@ -11,7 +11,7 @@
                 ['Users', {{count($users)}},{{count($authors) + count($subscribers)}} , {{count($administrators)}}],
                 ['Posts', {{count($posts)}},{{count($drafted)}} ,{{count($published)}} ],
                 ['Comments', {{count($comments)}}, {{count($unapproved)}}, {{count($approved)}}],
-                ['Categories', {{count($categories)}}, 0, 0]
+                ['Comment replies', {{count($replies)}}, {{count($replies_unapproved)}}, {{count($replies_approved)}}]
             ]);
 
             var options = {

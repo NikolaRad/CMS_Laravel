@@ -12,7 +12,7 @@ class Reply extends Model
         return $this->belongsTo('App\Comment');
     }
 
-    public function user(){
+    public function author(){
         return $this->belongsTo('App\User');
     }
 }

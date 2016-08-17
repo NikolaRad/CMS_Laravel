@@ -17,7 +17,7 @@ class PublicCommentController extends Controller
         $content = $request->get('content');
         $comment = new Comment();
         $comment->post_id = $post_id;
-        $comment->user_id = $author_id;
+        $comment->author_id = $author_id;
         $comment->content = $content;
         $comment->save();
         return redirect()->back();

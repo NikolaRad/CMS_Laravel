@@ -67,17 +67,17 @@
                 <!-- Comment -->
                 <div class="media">
                     <a class="pull-left" href="#">
-                        <img class="media-object img-responsive img-circle" src="{{$comment->user->photo ? $comment->user->photo->name : 'http://placehold.it/64x64'}}" alt="">
+                        <img class="media-object img-responsive img-circle" src="{{$comment->author->photo ? $comment->author->photo->name : 'http://placehold.it/64x64'}}" alt="">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">{{$comment->user->name}}
+                        <h4 class="media-heading">{{$comment->author->name}}
                             <small>{{$comment->created_at->diffForHumans()}}</small>
                             @if(Illuminate\Support\Facades\Auth::user())
                                 @if(Illuminate\Support\Facades\Auth::user()->isAdmin())
                                     {!! Form::model($comment,['method'=>'DELETE','action'=>['CommentController@destroy',$comment->id]]) !!}
                                     {!! Form::submit('Delete comment',['class'=>'btn btn-danger']) !!}
                                     {!! Form::close() !!}
-                                @elseif(Illuminate\Support\Facades\Auth::user()->id == $comment->user->id)
+                                @elseif(Illuminate\Support\Facades\Auth::user()->id == $comment->author->id)
                                     {!! Form::model($comment,['method'=>'DELETE','action'=>['CommentController@destroy',$comment->id]]) !!}
                                     {!! Form::submit('Delete comment',['class'=>'btn btn-danger']) !!}
                                     {!! Form::close() !!}
@@ -85,15 +85,69 @@
                             @endif
                         </h4>
                         {{$comment->content}}
+
+                        <div class="replay">
+                            @if(Illuminate\Support\Facades\Auth::user())
+                                <br><button class="replay_button btn btn-primary pull-left">Reply</button>
+                            @endif
+
+                            <div class="replay-form">
+                                {{--Replay form--}}
+                                {!! Form::open(['method'=>'POST','action'=>'PublicRepliesController@store']) !!}
+                                <div class="form-group {{$errors->has('replay_content') ? 'has-error' : ''}}">
+                                    {!! Form::label('replay_content','Replay content: ') !!}
+                                    {!! Form::textarea('replay_content',null,['class'=>'form-control','rows'=>'3']) !!}
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::hidden('comment',$comment->id) !!}
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::submit('Replay',['class'=>'form-control btn btn-primary']) !!}
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
+
+                        @if($comment->replies)
+                            @foreach($comment->replies as $replay)
+                                @if($replay->is_approved == 1)
+                                    <!-- Nested Comment -->
+                                    <div class="media">
+                                        <a class="pull-left" href="#">
+                                            <img class="media-object img-responsive img-circle" src="{{$replay->author->photo ? $replay->author->photo->name : 'http://www.placehold.it/100x100'}}" alt="">
+                                        </a>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">{{$replay->author->name}}
+                                                <small>{{$replay->created_at->diffForHumans()}}</small>
+                                            </h4>
+                                            {{$replay->content}}
+                                        </div>
+                                    </div>
+                                    <!-- End Nested Comment -->
+                                @else
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-responsive img-circle" src="{{$replay->author->photo ? $replay->author->photo->name : 'http://www.placehold.it/100x100'}}" alt="">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">{{$replay->author->name}}
+                                        <small>{{$replay->created_at->diffForHumans()}}</small>
+                                    </h4>
+                                    <div class="alert alert-info">Comment has not been approved yet.</div>
+                                </div>
+                            </div>
+                                @endif
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             @else
                 <div class="media">
                     <a class="pull-left" href="#">
-                        <img class="media-object img-responsive img-circle" src="{{$comment->user->photo ? $comment->user->photo->name : 'http://placehold.it/64x64'}}" alt="">
+                        <img class="media-object img-responsive img-circle" src="{{$comment->author->photo ? $comment->author->photo->name : 'http://placehold.it/64x64'}}" alt="">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">{{$comment->user->name}}
+                        <h4 class="media-heading">{{$comment->author->name}}
                             <small>{{$comment->created_at->diffForHumans()}}</small>
                         </h4>
                         <div class="alert alert-info">Comment has not been approved yet.</div>
@@ -102,32 +156,6 @@
             @endif
         @endforeach
     @endif
-
-    {{--<!-- Comment -->--}}
-        {{--<div class="media">--}}
-            {{--<a class="pull-left" href="#">--}}
-                {{--<img class="media-object" src="http://placehold.it/64x64" alt="">--}}
-            {{--</a>--}}
-            {{--<div class="media-body">--}}
-                {{--<h4 class="media-heading">Start Bootstrap--}}
-                    {{--<small>August 25, 2014 at 9:30 PM</small>--}}
-                {{--</h4>--}}
-                {{--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.--}}
-                {{--<!-- Nested Comment -->--}}
-                {{--<div class="media">--}}
-                    {{--<a class="pull-left" href="#">--}}
-                        {{--<img class="media-object" src="http://placehold.it/64x64" alt="">--}}
-                    {{--</a>--}}
-                    {{--<div class="media-body">--}}
-                        {{--<h4 class="media-heading">Nested Start Bootstrap--}}
-                            {{--<small>August 25, 2014 at 9:30 PM</small>--}}
-                        {{--</h4>--}}
-                        {{--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<!-- End Nested Comment -->--}}
-            {{--</div>--}}
-        {{--</div>--}}
 
 </div>
 @endsection
@@ -142,4 +170,14 @@
         </ul>
     </div>
     @endif
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $('.replay .replay_button').click(function(){
+                $(this).next().slideToggle(500);
+            });
+        });
+    </script>
 @endsection

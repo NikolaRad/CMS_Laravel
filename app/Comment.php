@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $fillable = ['post_id','is_approved','author_id','content'];
+    protected $fillable = ['post_id','is_approved','user_id','content'];
 
     public function post(){
         return $this->belongsTo('App\Post');
@@ -16,7 +16,7 @@ class Comment extends Model
         return $this->hasMany('App\Reply');
     }
 
-    public function user(){
+    public function author(){
         return $this->belongsTo('App\User');
     }
 }

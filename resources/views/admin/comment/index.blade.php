@@ -5,6 +5,19 @@
 @endsection
 
 @section('content')
+    @if(session('deleted_comment'))
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-success alert-dismissible text-center fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ session('deleted_comment') }}
+                </div>
+            </div>
+        </div>
+    @endif
+
     <table class="table table-hover">
         <thead>
           <tr>
@@ -13,6 +26,7 @@
             <th>Author</th>
             <th>Is Approved</th>
             <th>Content</th>
+            <th>Replies</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Change status</th>
@@ -25,9 +39,10 @@
                   <tr>
                     <td>{{$comment->id}}</td>
                     <td><a href="/post/{{$comment->post->id}}">{{$comment->post->title}}</a></td>
-                    <td>{{$comment->user->name}}</td>
+                    <td>{{$comment->author->name}}</td>
                     <td>{{$comment->is_approved == 0 ? 'Unapproved' : 'Approved'}}</td>
                     <td class="text-justify">{{$comment->content}}</td>
+                    <td class="text-center"><a href="/admin/comment/replies/{{$comment->id}}">{{count($comment->replies)}}</a></td>
                     <td>{{$comment->created_at->diffForHumans()}}</td>
                     <td>{{$comment->updated_at->diffForHumans()}}</td>
                     <td>

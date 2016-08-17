@@ -6,9 +6,14 @@ Route::get('/','PostController@welcome');
 
 Route::get('/category/{id}','PostController@category');
 
-Route::get('/comment/create','PublicCommentController@create');
-
 Route::auth();
+
+Route::group(['middleware'=>'auth'], function(){
+
+    Route::get('/comment/create','PublicCommentController@create');
+
+    Route::post('/comment/replies','PublicRepliesController@store');
+});
 
 Route::group(['middleware'=>'admin'],function(){
 
@@ -27,5 +32,8 @@ Route::group(['middleware'=>'admin'],function(){
     Route::get('/admin','AdminController@index');
 
     Route::get('/admin/comments/change/{id}','CommentController@change');
+
     Route::get('/admin/posts/change/{id}','PostController@change');
+
+    Route::get('/admin/post/comments/{id}','CommentController@show');
 });

@@ -24,6 +24,12 @@
     @else
         <h2>There is no posts</h2>
     @endif
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-5">
+            {{$posts->render()}}
+        </div>
+    </div>
 @endsection
 
 @section('categories')

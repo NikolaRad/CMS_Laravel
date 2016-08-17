@@ -2,31 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Reply;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ReplayController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,7 +20,18 @@ class ReplayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->get('replay_content') != ''){
+            $comment_id = $request->get('comment');
+            $author_id = Auth::user()->id;
+            $content = $request->get('replay_content');
+            $replay = new Reply();
+            $replay->comment_id = $comment_id;
+            $replay->author_id = $author_id;
+            $replay->content = $content;
+            $replay->save();
+            return redirect()->back();
+        }
+        return redirect()->back();
     }
 
     /**
@@ -47,7 +42,8 @@ class ReplayController extends Controller
      */
     public function show($id)
     {
-        //
+        $replies = Reply::where('comment_id',$id)->get();
+        return view('admin.replies.index',compact('replies','id'));
     }
 
     /**
@@ -58,19 +54,10 @@ class ReplayController extends Controller
      */
     public function edit($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $replay = Reply::findOrFail($id);
+        $replay->is_approved == 0 ? $replay->is_approved = 1 : $replay->is_approved = 0;
+        $replay->save();
+        return redirect()->back();
     }
 
     /**
@@ -81,6 +68,9 @@ class ReplayController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $replay = Reply::findOrFail($id);
+        $replay->delete();
+        Session::flash('deleted_replay', 'Replay has been successfully deleted.');
+        return redirect()->back();
     }
 }

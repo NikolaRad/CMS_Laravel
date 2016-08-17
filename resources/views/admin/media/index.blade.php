@@ -55,4 +55,9 @@
         @endif
         </tbody>
       </table>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-5">
+            {{$photos->render()}}
+        </div>
+    </div>
 @endsection

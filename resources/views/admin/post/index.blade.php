@@ -47,7 +47,7 @@
               <td><a href="/post/{{ $post->id }}">{{ $post->title }}</a></td>
               <td>{{ str_limit($post->content,100) }}...</td>
               <td><img width="200" class="img-responsive img-rounded" src="{{ $post->photo ? $post->photo->name : "http://www.placehold.it/200x200" }}" alt=""></td>
-              <td class="text-center">{{count($post->comments)}}</td>
+              <td class="text-center"><a href="/admin/post/comments/{{$post->id}}">{{count($post->comments)}}</a></td>
               <td class="text-center">{{$post->views ? $post->views : 'No views'}}</td>
               <td>{{$post->status == 0 ? 'drafted' : 'published'}}</td>
               <td>{{ $post->created_at->diffForHumans() }}</td>
@@ -64,4 +64,9 @@
         @endif
         </tbody>
       </table>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-5">
+            {{$posts->render()}}
+        </div>
+    </div>
 @endsection

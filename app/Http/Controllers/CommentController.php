@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CommentController extends Controller
 {
@@ -20,26 +21,7 @@ class CommentController extends Controller
         $comments = Comment::orderBy('id','desc')->get();
         return view('admin.comment.index',compact('comments'));
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request,['content'=>'required']);
-        $post_id = $request->get('post');
-        $author_id = Auth::user()->id;
-        $content = $request->get('content');
-        $comment = new Comment();
-        $comment->post_id = $post_id;
-        $comment->user_id = $author_id;
-        $comment->content = $content;
-        $comment->save();
-        return redirect()->back();
-    }
-
+ 
     /**
      * Remove the specified resource from storage.
      *
@@ -49,6 +31,10 @@ class CommentController extends Controller
     public function destroy($id)
     {
         $comment = Comment::findOrFail($id);
+        foreach($comment->replies as $replay){
+            $replay->delete();
+        }
+        Session::flash('deleted_comment', 'Comment has been successfully deleted.');
         $comment->delete();
         return redirect()->back();
     }
@@ -62,5 +48,10 @@ class CommentController extends Controller
         }
         $comment->save();
         return redirect()->back();
+    }
+
+    public function show($id){
+        $comments = Comment::where('post_id',$id)->orderBy('id','desc')->get();
+        return view('admin.comment.index',compact('comments'));
     }
 }
